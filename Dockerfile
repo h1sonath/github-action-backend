@@ -1,4 +1,11 @@
-FROM maven:3.8.3-openjdk-17 as build
-WORKDIR ./src
-COPY . .
-RUN mvn install
+FROM eclipse-temurin:17-jdk-focal
+
+WORKDIR /app
+
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:go-offline
+
+COPY src ./src
+
+CMD ["./mvnw", "spring-boot:run"]
