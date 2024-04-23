@@ -1,0 +1,53 @@
+name: deploy dev
+on: [push]
+
+jobs:
+  push_to_registries:
+    name: Build and push to GHCR
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Login to ECR
+        uses: docker/login-action@v2
+        with:
+          registry: 339712938940.dkr.ecr.ap-southeast-1.amazonaws.com
+          username: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: |
+            339712938940.dkr.ecr.ap-southeast-1.amazonaws.com/staging-codese-backend
+            ghcr.io/${{ github.repository }}
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
+        with:
+          context: .
+          push: true
+          tags: "${{ steps.meta.outputs.tags }}-${{ github.sha }}"
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Deploy image to server
+        run: |
+          echo develop
+          ls -la
+          echo Update newest image to deploy environment: "${{ steps.meta.outputs.tags }}-${{ github.sha }}"
+          echo Hello thay Thien
+          echo Hello Hiep
+
+  
