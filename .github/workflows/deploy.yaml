@@ -58,7 +58,7 @@ jobs:
 
           echo Github sha commit: ${{ github.sha }} at branch ${{ steps.extract_branch.outputs.branch }}
 
-          git clone https://oauth2:${{ secrets.GH_TOKEN }}@github.com/h1sonath/github-action-devops
+          git clone https://h1sonath:${{ secrets.GH_TOKEN }}@github.com/h1sonath/github-action-devops.git
           cd hiepvinh-devops/k8s-helmcharts/hiepvinh-backend/
 
           sed -i "s/\(tag: \"\)[^\"]*\(\".*\)/\1${{ steps.extract_branch.outputs.branch }}_${{ github.sha }}\2/" values.yaml
