@@ -42,12 +42,31 @@ jobs:
           tags: "${{ steps.meta.outputs.tags }}-${{ github.sha }}"
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Deploy image to server
+
+      - name: Extract branch name
+        shell: bash
+        run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
+
+
+      - name: Update helm repo
         run: |
-          echo develop
-          ls -la
-          echo Update newest image to deploy environment: "${{ steps.meta.outputs.tags }}-${{ github.sha }}"
-          echo Hello thay Thien
-          echo Hello Hiep
+          echo Update newest image to deploy environment ${{ steps.extract_branch.outputs.branch }} at commit ${{ github.sha }}
+
+          git config --global user.email "huuvinh0201@gmail.com"
+          git config --global user.name "h1sonath"
+
+          echo Github sha commit: ${{ github.sha }} at branch ${{ steps.extract_branch.outputs.branch }}
+
+          git clone https://oauth2:${{ secrets.GH_TOKEN }}@github.com/ndthien98/hiepvinh-devops
+          cd hiepvinh-devops/k8s-helmcharts/hiepvinh-frontend/
+
+          sed -i "s/\(tag: \"\)[^\"]*\(\".*\)/\1${{ steps.extract_branch.outputs.branch }}_${{ github.sha }}\2/" values.yaml
+
+          cat values.yaml
+
+          git add .
+          git commit -m "Github action trigger build with branch ${{ steps.extract_branch.outputs.branch }} commit ${{ github.sha }}"
+          git push origin master
 
   
