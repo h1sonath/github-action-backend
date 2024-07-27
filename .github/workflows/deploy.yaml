@@ -30,10 +30,8 @@ jobs:
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          images: |
-            339712938940.dkr.ecr.ap-southeast-1.amazonaws.com/staging-codese-backend
-            ghcr.io/${{ github.repository }}
-
+          images: 339712938940.dkr.ecr.ap-southeast-1.amazonaws.com/staging-codese-backend
+          
       - name: Build and push Docker images
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
