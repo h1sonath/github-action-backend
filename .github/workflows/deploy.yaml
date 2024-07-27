@@ -39,7 +39,12 @@ jobs:
         with:
           context: .
           push: true
-          tags: "${{ steps.meta.outputs.tags }}-${{ github.sha }}"
+          tags: "${{ steps.meta.outputs.tags }}_${{ github.sha }}" 
+          
+          # steps.meta.outputs.tags = 364402321456.dkr.ecr.ap-southeast-1.amazonaws.com/staging-codese-frontend:master
+          # github.sha: 3fda98b2e3ac259d8d67585f671
+          # tags: 364402321456.dkr.ecr.ap-southeast-1.amazonaws.com/staging-codese-frontend:master_3fda98b2e3ac259d8d67585f671
+
           labels: ${{ steps.meta.outputs.labels }}
 
 
