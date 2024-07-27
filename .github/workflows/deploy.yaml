@@ -56,7 +56,7 @@ jobs:
 
       - name: Update helm repo
         run: |
-          echo Update newest image to deploy environment ${{ steps.extract_branch.outputs.branch }} at commit ${{ github.sha }}
+          echo S Update newest image to deploy environment ${{ steps.extract_branch.outputs.branch }} at commit ${{ github.sha }}
 
           git config --global user.email "huuvinh0201@gmail.com"
           git config --global user.name "h1sonath"
