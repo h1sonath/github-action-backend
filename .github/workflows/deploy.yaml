@@ -31,7 +31,7 @@ jobs:
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
           images: 339712938940.dkr.ecr.ap-southeast-1.amazonaws.com/staging-codese-backend
-          
+
       - name: Build and push Docker images
         uses: docker/build-push-action@3b5e8027fcad23fda98b2e3ac259d8d67585f671
         with:
@@ -54,7 +54,7 @@ jobs:
 
       - name: Update helm repo
         run: |
-          echo S Update newest image to deploy environment ${{ steps.extract_branch.outputs.branch }} at commit ${{ github.sha }}
+          echo DO Update newest image to deploy environment ${{ steps.extract_branch.outputs.branch }} at commit ${{ github.sha }}
 
           git config --global user.email "huuvinh0201@gmail.com"
           git config --global user.name "h1sonath"
